@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <p>STORE!</p>
+    <form id="wordForm">
+      <input type="text" id="word" name="word" />
+      <textarea
+        id="wordDefinition"
+        name="definition"
+        rows="4"
+        cols="50"
+      ></textarea>
+      <br />
+      <input
+        type="submit"
+        value="Submit"
+        onclick="checkWord(); return false;"
+      />
+    </form>
+    <h4 id="feedback"></h4>
+  </body>
+  <script>
+    function checkWord() {
+      const word = document.getElementById("word").value;
+      const feedback = document.getElementById("feedback").value;
+
+      var hasNumber = /\d/;
+      if (hasNumber.test(word)) {
+        document.getElementById("feedback").innerHTML = 'Error: contains a number! word not saved!';
+
+      } else {
+        storeWord();
+      }
+    }
+    function storeWord() {
+      const wordDefinition = document.getElementById("wordDefinition").value;
+      const word = document.getElementById("word").value;
+
+      // Create a data object to send in the POST request
+      const data = {
+        word: word,
+        definition: wordDefinition,
+      };
+
+          // Make a POST request to a fake API endpoint using JSONPlaceholder
+          fetch('https://jsonplaceholder.typicode.com/posts', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(data),
+            })
+            .then(response => response.json())
+            .then(data => {
+                // Handle the response data (this is just an example)
+                console.log('Success:', data);
+                document.getElementById("feedback").innerHTML = 'Word and definition saved successfully.';
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+                document.getElementById("feedback").innerHTML = 'Error saving word and definition.';
+            });
+    }
+  </script>
+</html>
