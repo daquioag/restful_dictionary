@@ -9,11 +9,42 @@
     <h1>Search Definitions</h1>
 
     <form id="search-form">
-        <input type="search" name="search" id="word_search">
+        <label for="word_search">Search Word:</label>
+        <input type="search" name="search" id="word_search" required>
+        <br>
+        <input type="button" value="Search" onclick="searchDefinition()">
     </form>
     <br>
+    <p id="word" name="word"></p>
     <textarea id="word_definition" name="definition" readonly="true" rows="40" cols="70"></textarea>
+    <h4 id="feedback"></h4>
 
 </body>
-<script></script>
+<script>
+    function searchDefinition() {
+        console.log("trying to search!")
+        const searchWord = document.getElementById("word_search").value;
+        console.log("1")
+        // Simple input validation
+        if (!searchWord) {
+            document.getElementById("word_search").innerHTML = 'Please provide a search term.';
+            return;
+        }
+        console.log("2")
+        console.log(searchWord)
+
+        // Make a GET request to retrieve a definition
+        fetch(`http://localhost:3000/search/${searchWord}`)
+            .then(response => response.json())
+            .then(data => {
+                console.log("1asdasd");
+                document.getElementById("word").innerHTML = `Word: ${data.word}`;
+                document.getElementById("word_definition").innerHTML = `Definition: ${data.definition}`;
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+                document.getElementById("word_definition").innerHTML = 'Word not found.';
+            });
+    }
+</script>
 </html>
