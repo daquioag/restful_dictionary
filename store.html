@@ -27,7 +27,6 @@
   <script>
     function checkWord() {
       const word = document.getElementById("word").value;
-      const feedback = document.getElementById("feedback").value;
 
       var hasNumber = /\d/;
       if (hasNumber.test(word)) {
@@ -48,7 +47,7 @@
       };
 
           // Make a POST request to a fake API endpoint using JSONPlaceholder
-          fetch('https://jsonplaceholder.typicode.com/posts', {
+          fetch('http://localhost:3000/store', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -63,7 +62,7 @@
             })
             .catch((error) => {
                 console.error('Error:', error);
-                document.getElementById("feedback").innerHTML = 'Error saving word and definition.';
+                document.getElementById("feedback").innerHTML = 'Error saving word and definition: ', error;
             });
     }
   </script>
