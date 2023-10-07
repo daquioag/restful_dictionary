@@ -45,9 +45,7 @@
         word: word,
         definition: wordDefinition,
       };
-
-          // Make a POST request to a fake API endpoint using JSONPlaceholder
-          fetch('http://localhost:3000/store', {
+          fetch(`http://localhost:3000/api/definitions`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

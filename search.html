@@ -34,17 +34,21 @@
         console.log(searchWord)
 
         // Make a GET request to retrieve a definition
-        fetch(`http://localhost:3000/search/${searchWord}`)
-            .then(response => response.json())
-            .then(data => {
-                console.log("1asdasd");
-                document.getElementById("word").innerHTML = `Word: ${data.word}`;
-                document.getElementById("word_definition").innerHTML = `Definition: ${data.definition}`;
-            })
-            .catch((error) => {
-                console.error('Error:', error);
-                document.getElementById("word_definition").innerHTML = 'Word not found.';
-            });
+        fetch(`http://localhost:3000/api/definitions/?word=${searchWord}`)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`Word '${searchWord}' not found!`);
+            }
+            return response.json();
+        })
+        .then(data => {
+            document.getElementById("word").innerHTML = `Word: ${data.word}`;
+            document.getElementById("word_definition").innerHTML = `Definition: ${data.definition}`;
+        })
+        .catch((error) => {
+            console.error('Error:', error);
+            document.getElementById("word_definition").innerHTML = 'Word not found.';
+        });
     }
 </script>
 </html>

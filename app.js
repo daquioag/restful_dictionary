@@ -42,7 +42,7 @@ const server = http.createServer((req, res) => {
     return;
   }
 
-  if (pathName === "/store" && req.method === "POST") {
+  if (pathName === "/api/definitions" && req.method === "POST") {
     console.log(pathName)
     let body = "";
     console.log("POOOOOST1");
@@ -83,29 +83,25 @@ const server = http.createServer((req, res) => {
         );
       }
     });
-  } else if (pathName.includes("/search") && req.method === "GET") {
-    console.log("get0");
-    const searchWord = pathName.slice("/search/".length).toLowerCase();
-    console.log(searchWord);
-    console.log(pathName);
+  } else if (pathName.includes("/api/definitions") && req.method === "GET") {
+
+    const parsedUrl = url.parse(req.url, true);
+    const queryParameters = parsedUrl.query;
+    const searchWord = queryParameters.word
     printDictionary()
-    // const definition = dictionary.find(
-    //   (Object) => Object.word.toLowerCase() === searchWord
-    // );
     console.log("get1");
 
-    let definition;
     let word_and_definition;
     for (const object of dictionary) {
       if (object.word.toLowerCase() === searchWord) {
-        definition = object.definition;
-        word = object.word;
         word_and_definition = object;
         break; // Once found, exit the loop
       }
     }
 
+
     if (word_and_definition) {
+      console.log("nice");
       res.writeHead(200, { "Content-Type": "application/json" });
       number_of_requests++;
       res.end(JSON.stringify(word_and_definition));
