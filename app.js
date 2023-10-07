@@ -7,16 +7,21 @@ const PORT = 3000;
 const dictionary = [];
 let number_of_requests = 0;
 
+
 const validateInput = (word, definition) => {
+    // Check if either word or definition is missing
   if (!word || !definition) {
     return false;
   }
+    // Check if both word and definition are strings
   if (typeof word !== "string" || typeof definition !== "string") {
     return false;
   }
+    // Check if the word contains any digits
   if (/\d/.test(word)) {
     return false;
   }
+    // If all checks pass, return true
   return true;
 };
 
@@ -36,9 +41,8 @@ function handleExistingEntry(res, word) {
 // Create a simple HTTP server
 const server = http.createServer((req, res) => {
   console.log("The server received a request!");
-  const parsedUrl = url.parse(req.url);
+  const parsedUrl = url.parse(req.url); 
   const pathName = parsedUrl.pathname;
-  console.log(pathName);
 
   // Enable CORS (Cross-Origin Resource Sharing) for all routes
   res.setHeader("Access-Control-Allow-Origin", "*");

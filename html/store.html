@@ -3,28 +3,29 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
+    <title>Store Word and Definition</title>
+    <link rel="stylesheet" href="../style/styles.css" />
+
   </head>
   <body>
-    <p>STORE!</p>
-    <form id="wordForm">
-      <input type="text" id="word" name="word" />
+    <h1>Word Hub</h1>
+    <form id="wordForm" class="area_container">
+      <input type="text" id="word" class="word_box" placeholder="Enter the word" name="word" />
       <textarea
         id="wordDefinition"
         name="definition"
-        rows="4"
-        cols="50"
+        placeholder="Enter the definition"
       ></textarea>
       <br />
       <input
         type="submit"
-        value="Submit"
+        value="Store"
         onclick="validateWordAndDefinition(); return false;"
       />
     </form>
-    <h4 id="feedback"></h4>
-    <h4 id="total_requests"></h4>
-    <h4 id="dictionary_length"></h4>
+    <p id="feedback"></p>
+    <p id="total_requests"></p>
+    <p id="dictionary_length"></p>
   </body>
   <script>
     function validateWordAndDefinition() {

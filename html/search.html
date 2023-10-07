@@ -4,23 +4,25 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Search Word</title>
+    <link rel="stylesheet" href="../style/styles.css" />
+
 </head>
 <body>
     <h1>Search Definitions</h1>
 
-    <form id="search-form">
-        <label for="word_search">Search Word:</label>
-        <input type="search" name="search" id="word_search" required>
+    <div id="search_container" class="area_container">
+        <input type="search" class="word_box" name="search" id="word_search" required placeholder="Search Word">
         <br>
-        <input type="button" value="Search" onclick="searchDefinition()">
-    </form>
+        <input type="button" value="Search" id="search_button" onclick="searchDefinition()">
+        <br>
+        <label id="definition_label" for="word_definition">Definition:</label>
+        <textarea id="word_definition" name="definition" readonly="true"></textarea>
+    </div>
     <br>
-    <p id="word" name="word"></p>
-    <textarea id="word_definition" name="definition" readonly="true" rows="40" cols="70"></textarea>
-    <h4 id="feedback"></h4>
-    <h4 id="feedback"></h4>
-    <h4 id="total_requests"></h4>
-    <h4 id="dictionary_length"></h4>
+
+    <p id="feedback"></p>
+    <p id="total_requests"></p>
+    <p id="dictionary_length"></p>
 </body>
 <script>
     function searchDefinition() {
@@ -41,12 +43,10 @@
         })
         .then(data => {
             console.log('Success:', data);
-            document.getElementById("word").innerHTML = `Word: ${searchWord}`;
-            document.getElementById("word_definition").innerHTML = `Definition: ${data.definition}`;
+            document.getElementById("word_definition").innerHTML = `${data.definition}`;
         })
         .catch((error) => {
             console.error('Error:', error);
-            document.getElementById("word").innerHTML = `Word: ${searchWord}`;
             document.getElementById("word_definition").innerHTML = 'Word not found.';
         });
     }
