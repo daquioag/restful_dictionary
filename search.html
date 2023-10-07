@@ -18,20 +18,18 @@
     <p id="word" name="word"></p>
     <textarea id="word_definition" name="definition" readonly="true" rows="40" cols="70"></textarea>
     <h4 id="feedback"></h4>
-
+    <h4 id="feedback"></h4>
+    <h4 id="total_requests"></h4>
+    <h4 id="dictionary_length"></h4>
 </body>
 <script>
     function searchDefinition() {
-        console.log("trying to search!")
         const searchWord = document.getElementById("word_search").value;
-        console.log("1")
         // Simple input validation
         if (!searchWord) {
             document.getElementById("word_search").innerHTML = 'Please provide a search term.';
             return;
         }
-        console.log("2")
-        console.log(searchWord)
 
         // Make a GET request to retrieve a definition
         fetch(`http://localhost:3000/api/definitions/?word=${searchWord}`)
@@ -42,11 +40,13 @@
             return response.json();
         })
         .then(data => {
-            document.getElementById("word").innerHTML = `Word: ${data.word}`;
+            console.log('Success:', data);
+            document.getElementById("word").innerHTML = `Word: ${searchWord}`;
             document.getElementById("word_definition").innerHTML = `Definition: ${data.definition}`;
         })
         .catch((error) => {
             console.error('Error:', error);
+            document.getElementById("word").innerHTML = `Word: ${searchWord}`;
             document.getElementById("word_definition").innerHTML = 'Word not found.';
         });
     }

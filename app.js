@@ -6,11 +6,7 @@ const PORT = 3000;
 // Data structure to store dictionary entries
 const dictionary = [];
 let number_of_requests = 0;
-function printDictionary() {
-    for (const entry of dictionary) {
-        console.log(`Word: ${entry.word}, Definition: ${entry.definition}`);
-    }
-}
+
 const validateInput = (word, definition) => {
   if (!word || !definition) {
     return false;
@@ -23,6 +19,20 @@ const validateInput = (word, definition) => {
   }
   return true;
 };
+
+function handleExistingEntry(res, word) {
+  // Entry already exists, send a warning response
+  res.writeHead(400, { "Content-Type": "application/json" });
+  res.end(
+    JSON.stringify({
+      success: false,
+      message: `Error!! '${word}' already exists. Word not saved!`,
+      requests: number_of_requests,
+      dictionary_length: dictionary.length,
+    })
+  );
+}
+
 // Create a simple HTTP server
 const server = http.createServer((req, res) => {
   console.log("The server received a request!");
@@ -43,74 +53,76 @@ const server = http.createServer((req, res) => {
   }
 
   if (pathName === "/api/definitions" && req.method === "POST") {
-    console.log(pathName)
+    number_of_requests++;
     let body = "";
-    console.log("POOOOOST1");
     req.on("data", (chunk) => {
-        console.log("POOOOOST2");
-
       body += chunk.toString();
     });
-    console.log("POOOOOST3");
-
+    console.log(number_of_requests);
     req.on("end", () => {
-        console.log("POOOOOST4");
-
       const { word, definition } = JSON.parse(body);
 
       if (validateInput(word, definition)) {
-        console.log("POOOOOST5");
-
-        number_of_requests++;
-        dictionary.push({ word, definition });
-        printDictionary();
-        res.writeHead(200, { "Content-Type": "application/json" });
-        console.log("POOOOOST6");
-        res.end(
-            
-          JSON.stringify({
-            success: true,
-            message: "Definition created successfully!",
-          })
-        );
+        const existingEntry = dictionary.find((entry) => entry.word === word);
+        if (existingEntry) {
+          // Call the function to handle existing entry
+          handleExistingEntry(res, word);
+        } else {
+          dictionary.push({ word, definition });
+          res.writeHead(200, { "Content-Type": "application/json" });
+          res.end(
+            JSON.stringify({
+              success: true,
+              message: `Word: \"${word}\" and definition: "${definition} created successfully!`,
+              requests: number_of_requests,
+              dictionary_length: dictionary.length,
+            })
+          );
+        }
       } else {
         res.writeHead(400, { "Content-Type": "application/json" });
         res.end(
           JSON.stringify({
-            error:
+            message:
               "Invalid input. Word and definition must be non-empty strings.",
+            requests: number_of_requests,
+            dictionary_length: dictionary.length,
           })
         );
       }
     });
   } else if (pathName.includes("/api/definitions") && req.method === "GET") {
+    number_of_requests++;
 
     const parsedUrl = url.parse(req.url, true);
-    const queryParameters = parsedUrl.query;
-    const searchWord = queryParameters.word
-    printDictionary()
-    console.log("get1");
+    const searchWord = parsedUrl.query.word;
 
-    let word_and_definition;
-    for (const object of dictionary) {
-      if (object.word.toLowerCase() === searchWord) {
-        word_and_definition = object;
-        break; // Once found, exit the loop
-      }
-    }
+    const word_and_definition = dictionary.find((object) => object.word === searchWord);
 
 
     if (word_and_definition) {
-      console.log("nice");
       res.writeHead(200, { "Content-Type": "application/json" });
-      number_of_requests++;
-      res.end(JSON.stringify(word_and_definition));
+      res.end(
+        JSON.stringify({
+          success: true,
+          message:  `Word '${searchWord}' found!`,
+          definition: word_and_definition.definition,
+          requests: number_of_requests,
+          dictionary_length: dictionary.length,
+        })
+      );
     } else {
       res.writeHead(404, { "Content-Type": "application/json" });
-      res.end(JSON.stringify({ error: `Word '${searchWord}' not found!` }));
+      res.end(
+        JSON.stringify({
+          message:
+           `Word '${searchWord}' not found!`,
+          requests: number_of_requests,
+          dictionary_length: dictionary.length,
+        })
+      );
     }
   }
-  console.log("The server received a request!22");
 });
 
 // Start the server
