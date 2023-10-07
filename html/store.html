@@ -52,7 +52,7 @@
     }
     function storeWord(dictionaryInput) {
 
-          fetch(`http://localhost:3000/api/definitions`, {
+          fetch(`http://comp4537.com/labs/lab4/api/definitions`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -64,17 +64,13 @@
                 console.log('Success:', data);
                 console.log(data.message)
                 document.getElementById("feedback").innerHTML = `Attemping to save.... \n ${data.message}`;
-                updateMetadata(data);
-            })
+                document.getElementById("dictionary_length").innerHTML = ` Dictionary Length: ${data.dictionary_length}`;
+                document.getElementById("total_requests").innerHTML = `Total Number of Requests: ${data.requests}`;            })
             .catch((error) => {
                 console.error('Error:', error);
                 document.getElementById("feedback").innerHTML = 'Error saving word and definition: ', error;
-                updateMetadata(data);
             });
     }
-    function updateMetadata(data) {
-    document.getElementById("dictionary_length").innerHTML = ` Dictionary Length: ${data.dictionary_length}`;
-    document.getElementById("total_requests").innerHTML = `Total Number of Requests: ${data.requests}`;
-}
+
   </script>
 </html>

@@ -34,7 +34,7 @@
         }
 
         // Make a GET request to retrieve a definition
-        fetch(`http://localhost:3000/api/definitions/?word=${searchWord}`)
+        fetch(`http://comp4537.com/labs/lab4/api/definitions/?word=${searchWord}`) // change this to the api URL
         .then(response => {
             if (!response.ok) {
                 throw new Error(`Word '${searchWord}' not found!`);

@@ -62,7 +62,6 @@ const server = http.createServer((req, res) => {
     req.on("data", (chunk) => {
       body += chunk.toString();
     });
-    console.log(number_of_requests);
     req.on("end", () => {
       const { word, definition } = JSON.parse(body);
 
@@ -95,7 +94,7 @@ const server = http.createServer((req, res) => {
         );
       }
     });
-  } else if (pathName.includes("/api/definitions") && req.method === "GET") {
+  } else if (pathName.includes("/api/definitions") && req.method === "GET") { // may need to change this
     number_of_requests++;
 
     const parsedUrl = url.parse(req.url, true);
