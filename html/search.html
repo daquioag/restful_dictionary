@@ -32,9 +32,10 @@
             document.getElementById("word_search").innerHTML = 'Please provide a search term.';
             return;
         }
-
+//http://vivianwebdev.com/Comp4537/Labs/Lab4/api/definitions
         // Make a GET request to retrieve a definition
-        fetch(`http://comp4537.com/labs/lab4/api/definitions/?word=${searchWord}`) // change this to the api URL
+       // fetch(`https://comp4537.com/labs/lab4/api/definitions/?word=${searchWord}`) // change this to the api URL
+        fetch(`https://vivianwebdev.com/Comp4537/Labs/Lab4/api/definitions/?word=${searchWord}`) // change this to the api URL
         .then(response => {
             if (!response.ok) {
                 throw new Error(`Word '${searchWord}' not found!`);
