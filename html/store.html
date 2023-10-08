@@ -32,7 +32,7 @@
       const word = document.getElementById("word").value;
       const definition = document.getElementById("wordDefinition").value;
 
-      var hasNumber = /\d/;
+      const hasNumber = /\d/;
       if (hasNumber.test(word)) {
         document.getElementById("feedback").innerHTML = 'Error: contains a number! word not saved!';
 
